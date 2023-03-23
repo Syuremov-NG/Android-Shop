@@ -1,0 +1,180 @@
+@startuml
+class com.shopm2.shop.api.model.CategoriesList {
+- List<CategoryDTO> items
++ List<CategoryDTO> getItems()
+}
+class com.shopm2.shop.api.body.Auth {
+~ String username
+~ String password
+}
+class com.shopm2.shop.api.ShopService {
+~ ShopApi api
+- {static} ShopService mInstance
+- {static} String BASE_URL
+- Retrofit mRetrofit
++ {static} ShopService getInstance()
++ ShopApi getShopApi()
+}
+class com.shopm2.shop.api.model.CategoryListSugar {
+~ List<CategoryDTO> items
+}
+interface com.shopm2.shop.api.ShopApi {
+~ Single<List<CategoryDTO>> getDatesWithPhoto()
+~ Call<ProductsList> getProducts(String,Integer,Integer,Integer)
+~ Call<CategoriesList> getCategories(String,Integer,Integer)
+~ Call<JsonPrimitive> getToken(Auth)
+}
+class com.shopm2.shop.PhotoActivity {
+- {static} int REQUEST_PERMISSION_WRITE_STORAGE
+- {static} String EXTRA_URL
+- SubsamplingScaleImageView imageView
+- Toolbar toolbar
+- boolean isToolbarVisible
+- Bitmap photo
++ {static} void start(Context,String)
+# void onCreate(Bundle)
++ boolean onCreateOptionsMenu(Menu)
++ boolean onOptionsItemSelected(MenuItem)
+# void onDestroy()
+- void hideActionBar()
+- void showActionBar()
+- void performSharing()
+- void setWallpaper()
++ void onRequestPermissionsResult(int,String[],int[])
+}
+class com.shopm2.shop.api.model.GalleryList {
+- List<GalleryDTO> items
++ List<GalleryDTO> getItems()
+}
+class com.shopm2.shop.api.model.ProductDTO {
+- String id
+- String name
+- String price
+- List<GalleryDTO> gallery
++ String getId()
++ void setId(String)
++ String getName()
++ void setName(String)
++ List<GalleryDTO> getGallery()
++ void setGallery(List<GalleryDTO>)
++ String getPrice()
++ void setPrice(String)
+}
+class com.shopm2.shop.MainActivity {
+~ CompositeDisposable disposable
+~ RecyclerView recyclerView
+~ Adapter adapter
+- String token
+- {static} String USERNAME
+- {static} String PASSWORD
++ boolean onCreateOptionsMenu(Menu)
++ boolean onOptionsItemSelected(MenuItem)
+# void onCreate(Bundle)
+- void getToken()
+- void getCategories()
+# void onDestroy()
+}
+class com.shopm2.shop.MainActivity.Adapter {
+~ ArrayList<CategoryDTO> categories
+~ ArrayList<CategorySugar> categoryCache
++ void setCategories(List<CategoryDTO>)
++ void setCacheCategories(List<CategorySugar>)
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
+}
+class com.shopm2.shop.MainActivity.ViewHolder {
+~ CategoryDTO categoryDTO
+~ CategorySugar categoryCache
+~ TextView text
++ void bind(CategoryDTO)
++ void bindCache(CategorySugar)
+}
+class com.shopm2.shop.api.model.CategorySugar {
+~ String name
+~ Long id
++ String getName()
++ void setName(String)
++ Long getId()
++ void setId(Long)
+}
+class com.shopm2.shop.PhotoListActivity {
+- {static} String USERNAME
+- {static} String PASSWORD
+- String token
+- ImageView imageView
+~ CompositeDisposable disposable
+~ RecyclerView recyclerView
+~ Adapter adapter
++ boolean onCreateOptionsMenu(Menu)
++ boolean onOptionsItemSelected(MenuItem)
++ {static} void start(Context,String,String)
+- void getToken()
+# void onCreate(Bundle)
+- void getProducts()
+# void onDestroy()
+}
+class com.shopm2.shop.PhotoListActivity.Adapter {
+- ArrayList<ProductDTO> products
++ void setProducts(List<ProductDTO>)
++ PhotoItemViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(PhotoItemViewHolder,int)
++ int getItemCount()
+}
+class com.shopm2.shop.PhotoListActivity.PhotoItemViewHolder {
+~ TextView text
+~ TextView price
+~ ImageView image
+~ ProductDTO product
+}
+class com.shopm2.shop.BuildConfig {
++ {static} boolean DEBUG
++ {static} String APPLICATION_ID
++ {static} String BUILD_TYPE
++ {static} int VERSION_CODE
++ {static} String VERSION_NAME
+}
+class com.shopm2.shop.api.model.GalleryDTO {
+- String file
++ String getFile()
++ void setFile(String)
+}
+class com.shopm2.shop.ExampleUnitTest {
++ void addition_isCorrect()
+}
+class com.shopm2.shop.api.model.CategoryDTO {
+- String name
+- String id
++ String getName()
++ String getId()
++ void setId(String)
+}
+class com.shopm2.shop.App {
+- ShopService nasaService
++ void onCreate()
++ ShopService getNasaService()
+}
+class com.shopm2.shop.api.model.ProductsList {
+- List<ProductDTO> items
++ List<ProductDTO> getItems()
++ void setItems(List<ProductDTO>)
+}
+class com.shopm2.shop.ExampleInstrumentedTest {
++ void useAppContext()
+}
+
+
+android.support.v7.app.AppCompatActivity <|-- com.shopm2.shop.PhotoActivity
+android.support.v7.app.AppCompatActivity <|-- com.shopm2.shop.MainActivity
+com.shopm2.shop.MainActivity +.. com.shopm2.shop.MainActivity.Adapter
+com.shopm2.shop.Adapter <|-- com.shopm2.shop.MainActivity.Adapter
+com.shopm2.shop.MainActivity +.. com.shopm2.shop.MainActivity.ViewHolder
+com.shopm2.shop.ViewHolder <|-- com.shopm2.shop.MainActivity.ViewHolder
+com.orm.SugarRecord <|-- com.shopm2.shop.api.model.CategorySugar
+android.support.v7.app.AppCompatActivity <|-- com.shopm2.shop.PhotoListActivity
+com.shopm2.shop.PhotoListActivity +.. com.shopm2.shop.PhotoListActivity.Adapter
+com.shopm2.shop.Adapter <|-- com.shopm2.shop.PhotoListActivity.Adapter
+com.shopm2.shop.PhotoListActivity +.. com.shopm2.shop.PhotoListActivity.PhotoItemViewHolder
+com.shopm2.shop.ViewHolder <|-- com.shopm2.shop.PhotoListActivity.PhotoItemViewHolder
+android.app.Application <|-- com.shopm2.shop.App
+@enduml
